@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('case_title');
             $table->text('description');
             $table->integer('user_id');
+            $table->integer('employee_id')->nullable();
             $table->timestamps();
         });
     }

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class IsUser
+class isAdmin
 {
     /**
      * Handle an incoming request.
@@ -17,11 +17,6 @@ class IsUser
      */
     public function handle(Request $request, Closure $next)
     {
-        // if (Auth::user() &&  Auth::user()->roles == 1 ) {
-        //     return $next($request);
-        // }
-        //     return redirect('/login');
-
         if(!isset(Auth::user()->roles)){
             return redirect('/login');
         }
@@ -29,13 +24,14 @@ class IsUser
         $roles = Auth::user()->roles;
         $seperatedRoles = explode(",",$roles);
 
-        foreach($seperatedRoles as $item){
-            if ($item == 1 || $item == 2 ||$item == 3) {
+        $lastRole = end($seperatedRoles);
+
+        if($lastRole == 3){
             return $next($request);
-        }
+        }else{
             return redirect('/login');
         }
-        
-        
+
+       
     }
 }

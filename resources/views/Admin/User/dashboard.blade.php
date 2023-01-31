@@ -84,9 +84,10 @@
 
         @php
             if(!isset($details)){
-                $details = DB::table('cases')->orderByDesc('id')->limit(1)->get();
+                $details = DB::table('cases')->where('user_id','=',Auth::user()->id)->orderByDesc('id')->limit(1)->get();
             }
 
+           if(count($details) > 0){
             if(!isset($case_files)){
                 $caseFiles = DB::table('case_files')->where('case_id','=',$details[0]->id)->get();
 
@@ -114,9 +115,12 @@
 
        }
             }
+           }
 
 
         @endphp
+      
+      @if(count($details) > 0)
       <div class="col-xl-3 col-md-12">
         <div class="ms-panel ms-panel-fh">
           <div class="ms-panel-body">
@@ -152,6 +156,9 @@
           </div>
         </div>
       </div>
+
+      @endif
+
     </div>
    <div class="row">
       <div class="col-md-6">

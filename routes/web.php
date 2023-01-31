@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\User\UserDashboardController;
+use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Employee\EmployeeDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CaseController;
 use App\Http\Controllers\User\FileUploadController;
@@ -45,5 +48,20 @@ Route::middleware('user')->group(function () {
     Route::get('/case/get-cases',[CaseController::class,'getCaseList']);
     Route::get('/get-case-details/{id}',[\App\Http\Controllers\User\CaseController::class,'getDetails']);
 
+
+});
+
+Route::middleware('employee')->group(function () {
+    Route::get('/employee-dashboard',[EmployeeDashboardController::class,'index']);
+    Route::get('/get-assaigned-cases',[CaseController::class,'assaigned_cases']);
+
+});
+
+Route::middleware('Admin')->group(function () {
+   Route::get('/admin-dashboard',[AdminDashboardController::class,'index']);
+    Route::get('/user-management',[UserManagementController::class,'index']);
+    Route::get('/get-user-list',[UserManagementController::class,'get_user_list']);
+    Route::get('/edit/user-permissions/{id}',[UserManagementController::class,'edit']);
+    Route::post('/update-user/{id}',[UserManagementController::class,'update']);
 
 });

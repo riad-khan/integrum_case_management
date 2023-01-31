@@ -22,16 +22,49 @@
         </a>
       </li>
 	 -->
+
+   @php
+     $roles = Auth::user()->roles;
+
+    $splitRoles = explode(",",$roles);
+    $lastRole = end($splitRoles);
+   @endphp
+
+   @if($lastRole ==1 || $lastRole == 2 || $lastRole == 3)
+
       <li class="menu-item">
-        <a href="customer.php">
+        <a href="/">
           <span><i class="material-icons fs-16">dashboard</i>Málið mitt</span>
         </a>
       </li>
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="user-management.php">
           <span><i class="fas fa-user"></i>Stillingar</span>
         </a>
+      </li> --}}
+
+      @endif
+
+      @if($lastRole == 2)
+
+      <li class="menu-item">
+        <a href="/employee-dashboard">
+          <span><i class="material-icons fs-16">dashboard</i>Dashboard</span>
+        </a>
       </li>
+
+      @endif
+
+      @if($lastRole == 3)
+
+      <li class="menu-item">
+        <a href="/user-management">
+          <span><i class="material-icons fs-16">dashboard</i>User Management</span>
+        </a>
+      </li>
+
+      @endif
+    
 
     </ul>
 
