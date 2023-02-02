@@ -29,7 +29,7 @@ class UserManagementController extends Controller
         if ($search_value) {
             $sql .= "where a.first_name like '{$search_value}%' or a.last_name like '{$search_value}%' or a.email like '{$search_value}%'";
         }
-        $sql .= "GROUP by a.id order by a.first_name {$order_by} limit {$start}, {$limit}";
+        $sql .= "GROUP by a.id order by a.id {$order_by} limit {$start}, {$limit}";
         $data = DB::select($sql);
 
         $rows = count($data);
@@ -53,7 +53,7 @@ class UserManagementController extends Controller
 
 
                 '<a href="/edit/user-permissions/'. $thisData->id. '"  class="fas fa-paper-plane ms-text-primary"><i class="la la-pen"></i></a>
-                <a href="/admin/faq/delete/' . $thisData->id . '" class="far fa-trash-alt ms-text-danger ml-1" onclick="return confirm(\'Are you confirm to delete?\')"><i class="la la-trash"></i></a>'
+                <a href="/delete-user/' . $thisData->id . '" class="far fa-trash-alt ms-text-danger ml-1" onclick="return confirm(\'Are you confirm to delete?\')"><i class="la la-trash"></i></a>'
             );
         }
         echo '{
@@ -87,8 +87,44 @@ class UserManagementController extends Controller
     }
 
     $update_profile = DB::table('users')->where('id','=',$id)->update($data);
-    Alert::success('Case Created', 'Case Created successfully');
+    Alert::success('User Updated', 'User updated successfully');
     return redirect()->to('/user-management');
+    }
+
+    public function create(){
+        $roles = DB::table('roles')->get();
+        return view('Admin.create-user',['role'=>$roles]);
+    }
+    public function store(Request $request){
+        $validate = $request->validate([
+            'first_name'=>'required|string|max:255|min:3',
+            'last_name'=>'required|string|max:255|min:3',
+            'email'=>'required|email|max:255|unique:users,email',
+            'password'=>'required'
+        ]);
+        $hashPassword = Hash::make($request->password);
+
+        $insert = DB::table('users')->insert([
+            'first_name'=>$request->first_name,
+            'last_name'=>$request->last_name,
+            'email'=>$request->email,
+            'date_of_birth'=>$request->date_of_birth,
+            'phone_number'=>$request->phone_number,
+            'language'=>$request->language,
+            'website'=>$request->website,
+            'location'=>$request->location,
+            'password'=>$hashPassword,
+            'roles'=>implode(',', (array) $request->input('roles', []))
+        ]);
+
+        Alert::success('User Created', 'User Created successfully');
+        return redirect()->to('/user-management');
+    }
+
+    public function delete_user($id){
+        $delete = DB::table('users')->where('id','=',$id)->delete();
+        Alert::success('User Deleted', 'User Deleted successfully');
+        return redirect()->to('/user-management');
     }
 }
 

@@ -47,6 +47,7 @@ Route::middleware('user')->group(function () {
     Route::post('/create-case',[CaseController::class,'create_case']);
     Route::get('/case/get-cases',[CaseController::class,'getCaseList']);
     Route::get('/get-case-details/{id}',[\App\Http\Controllers\User\CaseController::class,'getDetails']);
+    Route::get('/user-case-delete/{id}',[\App\Http\Controllers\User\CaseController::class,'user_case_delete']);
 
 
 });
@@ -63,5 +64,13 @@ Route::middleware('Admin')->group(function () {
     Route::get('/get-user-list',[UserManagementController::class,'get_user_list']);
     Route::get('/edit/user-permissions/{id}',[UserManagementController::class,'edit']);
     Route::post('/update-user/{id}',[UserManagementController::class,'update']);
+    Route::get('/create-user/',[UserManagementController::class,'create']);
+    Route::post('/store-user',[UserManagementController::class,'store']);
+    Route::get('/case-manage',[CaseController::class,'case_manage']);
+    Route::get('/case-list',[CaseController::class,'Admin_case_list']);
+    Route::get('/case-edit/{id}',[CaseController::class,'edit_Case_Admin']);
+    Route::post('/case-update/{id}',[CaseController::class,'update_Case_Admin']);
+    Route::post('/case/delete/{id}',[CaseController::class,'case_delete']);
+    Route::get('/delete-user/{id}',[UserManagementController::class,'delete_user']);
 
 });

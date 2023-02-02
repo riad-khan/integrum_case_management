@@ -63,6 +63,12 @@
         </a>
       </li>
 
+      <li class="menu-item">
+        <a href="/case-manage">
+          <span><i class="material-icons fs-16">dashboard</i>Case Management</span>
+        </a>
+      </li>
+
       @endif
     
 

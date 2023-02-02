@@ -4530,6 +4530,14 @@ a .badge[class*='badge-outline-'] {
   margin: 100px auto;
 }
 
+.hidden {
+  display: none !important
+}
+
+.display {
+  display: block !important
+}
+
 .spinner-9 .ms-cube {
   width: 33%;
   height: 33%;

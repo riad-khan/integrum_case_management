@@ -7,8 +7,12 @@
 
 
             <div class="ms-panel">
-                <div class="ms-panel-header">
+                <div class="flex ms-panel-header">
                     <h6>User Management</h6>
+                    <a href="/create-user" class="btn mb-2 mt-2 btn-primary">
+                        Create New User
+                    </a>
+                    
                 </div>
                 <div class="ms-panel-body">
                     <div class="table-responsive">

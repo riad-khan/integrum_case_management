@@ -105,13 +105,9 @@
        ];
 
        foreach ($caseFiles as $item){
-          $seperateHyphen = str_replace("-"," ",$item->meta);
-           $words = explode(' ',$seperateHyphen); // Break words into array
-           $noofwords = count($words); // Find out how many
-           unset($words[$noofwords-1]); // remove the last one (-1 because of zero-index)
-           $newstring = implode(' ',$words); //put back together
+        
 
-           $case_files[$newstring] = "yes";
+           $case_files[$item->meta] = "yes";
 
        }
             }
@@ -142,10 +138,10 @@
 
                     @if($item == 'yes')
 
-                 <li><a href="">1) {{$key}} <i class="flaticon-tick-inside-circle ml-3"></i></a></li>
+                 <li><a href="">{{$loop->iteration}}) {{$key}} <i class="flaticon-tick-inside-circle ml-3"></i></a></li>
 
                     @else
-                        <li><a href="">1) {{$key}} </a></li>
+                        <li><a href="">{{$loop->iteration}}) {{$key}} </a></li>
 
                     @endif
 
@@ -271,36 +267,28 @@
           <div class="ms-panel-body">
               <div class="time-line">
                   <ul>
+
+                    @php
+                    
+                     if(!isset($time_line)){
+                      $lattestCase = DB::table('cases')->where('user_id','=',Auth::user()->id)->orderBy('id','DESC')->get();
+                      $time_line= DB::table('timeline')->where('case_id','=',$lattestCase[0]->id)->get();
+                       echo $lattestCase[0]->id ;
+                      
+                     }
+                    @endphp
+
+
+                    @foreach($time_line as $item)
+
                       <li>
-                          <span class="time-line_heading">Mál stofnað</span>
+                          <span class="time-line_heading">{{$item->title}}</span>
                           <span class="time-arrow"><img src="{{asset('/admin/assets/img/custom/step-arrow.svg')}}" alt=""/></span>
-                          <span class="time-date">01.01.2022</span>
+                          <span class="time-date">{{$item->approve_date}}</span>
                       </li>
-                      <li>
-                          <span class="time-line_heading">Tjónsstilkynning send</span>
-                          <span class="time-arrow"><img src="{{asset('/admin/assets/img/custom/step-arrow.svg')}}" alt=""/></span>
-                          <span class="time-date">01.01.2022</span>
-                      </li>
-                      <li>
-                          <span class="time-line_heading">Tjónsstilkynning send</span>
-                          <span class="time-arrow"><img src="{{asset('/admin/assets/img/custom/step-arrow.svg')}}" alt=""/></span>
-                          <span class="time-date">01.01.2022</span>
-                      </li>
-                      <li>
-                          <span class="time-line_heading">Lögregluskýrsla barst</span>
-                          <span class="time-arrow"><img src="{{asset('/admin/assets/img/custom/step-arrow.svg')}}" alt=""/></span>
-                          <span class="time-date">01.01.2022</span>
-                      </li>
-                      <li>
-                          <span class="time-line_heading">Áverkavottorð sent</span>
-                          <span class="time-arrow"><img src="{{asset('/admin/assets/img/custom/step-arrow.svg')}}" alt=""/></span>
-                          <span class="time-date">01.01.2022</span>
-                      </li>
-                      <li>
-                          <span class="time-line_heading">Áverkavottorð sent</span>
-                          <span class="time-arrow"><img src="{{asset('/admin/assets/img/custom/step-arrow.svg')}}" alt=""/></span>
-                          <span class="time-date">01.01.2022</span>
-                      </li>
+
+                      @endforeach
+                     
 
                   </ul>
               </div>
