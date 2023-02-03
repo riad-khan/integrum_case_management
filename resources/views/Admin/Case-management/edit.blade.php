@@ -8,11 +8,22 @@
                 <div class="col-xl-6 col-md-12">
                     <div class="ms-panel">
                         <div class="ms-panel-header">
-                            <h6>Edit Case</h6>
+                            <h6>Case ID : {{$case[0]->id}}</h6>
                         </div>
                         <div class="ms-panel-body">
 
                             @csrf
+                            <div class="form-row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="validationCustom03">Case Score</label>
+                                    <div class="input-group">
+                                        <input type="text" value="{{$case[0]->case_score}}" class="form-control" name="score" id="validationCustom03">
+                                        <div class="invalid-feedback">
+                                            Please provide a valid Language.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-row">
                                 <div class="col-md-12 mb-3">
@@ -30,7 +41,13 @@
                                 </div>
 
                             </div>
+
+                            
+
+                            
                         </div>
+
+                        
 
 
 
@@ -140,6 +157,7 @@
 
                             <th scope="col">Case Files</th>
                             <th scope="col">Approved By</th>
+                            <th scope="col">Created At</th>
 
                         </tr>
                     </thead>
@@ -161,6 +179,7 @@
                                 </td>
                                 <td>{{ $approves[$key] }}</td>
 
+                                <td>{{ $creates[$key] }}</td>
                             </tr>
                         @endforeach
 
@@ -182,7 +201,7 @@
                               <li>
                                   <span class="time-line_heading">{{$key}}</span>
                                   <span class="time-arrow"><img src="{{asset('/admin/assets/img/custom/step-arrow.svg')}}" alt=""/></span>
-                                  <input type="text" value="{{$item}}" name="date[]"  class="form-control">
+                                  <input type="date" value="{{$item}}" name="date[]"  class="form-control">
                                   <input type="hidden" value="{{$key}}" name="title[]"  class="form-control">
                                   
                               </li>
@@ -231,7 +250,7 @@
             let html = ''
             let user_id = document.getElementById('user_id').value;
             let response = await axios.get(`/api/case-files/${page}/${user_id}`);
-            let url = 'http://127.0.0.1:8000/'
+            let url = 'http://127.0.0.1:8002/'
 
             response.data.uploaded_files.map((item) => {
                 files.push(item)
@@ -252,7 +271,7 @@
                 }
 
                 html += '<a href=' + url + item.file +
-                    ' style="text-align: center;margin-left:12px" download>' + item.title + '</a>'
+                    ' style="width:100%;display:block" download>' + item.title + '</a>'
                 html += '</div>';
                 document.getElementById('files').innerHTML = html;
             })
@@ -261,12 +280,15 @@
         }
         let count = 0;
 
-        function LoadMore() {
-            count++;
+function LoadMore() {
+    count++;
 
-            fetchFiles(count);
+    fetchFiles(count);
 
-        }
+}
+
+
+       
         fetchFiles(0);
     </script>
 @endsection

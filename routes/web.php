@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CaseController;
 use App\Http\Controllers\User\FileUploadController;
 use App\Http\Controllers\UserProfileController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +56,9 @@ Route::middleware('user')->group(function () {
 Route::middleware('employee')->group(function () {
     Route::get('/employee-dashboard',[EmployeeDashboardController::class,'index']);
     Route::get('/get-assaigned-cases',[CaseController::class,'assaigned_cases']);
+    Route::get('/case-edit/{id}',[CaseController::class,'edit_Case_Admin']);
+    Route::post('/case-update/{id}',[CaseController::class,'update_Case_Admin']);
+    Route::post('/case/delete/{id}',[CaseController::class,'case_delete']);
 
 });
 
@@ -68,9 +72,12 @@ Route::middleware('Admin')->group(function () {
     Route::post('/store-user',[UserManagementController::class,'store']);
     Route::get('/case-manage',[CaseController::class,'case_manage']);
     Route::get('/case-list',[CaseController::class,'Admin_case_list']);
-    Route::get('/case-edit/{id}',[CaseController::class,'edit_Case_Admin']);
-    Route::post('/case-update/{id}',[CaseController::class,'update_Case_Admin']);
-    Route::post('/case/delete/{id}',[CaseController::class,'case_delete']);
+   // Route::get('/case-edit/{id}',[CaseController::class,'edit_Case_Admin']);
+   
     Route::get('/delete-user/{id}',[UserManagementController::class,'delete_user']);
 
+});
+
+Route::get('/run-queue', function () {
+    exec('php artisan queue:work');
 });

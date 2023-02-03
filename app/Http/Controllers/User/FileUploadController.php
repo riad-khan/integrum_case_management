@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\FileUploadNotificationJob;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,8 @@ class FileUploadController extends Controller
             'user_id'=>Auth::user()->id,
             'created_at'=>Carbon::now(),
         ]);
+
+        dispatch(new FileUploadNotificationJob());
 
         Alert::success('File uploaded', 'File uploaded sucessfully');
             return redirect()->back()->with('File uploaded sucessfully');

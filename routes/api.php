@@ -22,5 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/assign-case',[CaseController::class,'assign_case_api']);
 Route::post('/update-case-file-list/{id}',[CaseController::class,'update_case_file_list']);
 Route::get('/case-files/{page}/{user_id}',[CaseController::class,'get_uploaded_files']);
+Route::get('/edit-case-details/{id}',[CaseController::class,'edit_case_details_api']);
+Route::post('/update-case-details/{id}',[CaseController::class,'update_case_details_api']);
+Route::get('/case-details-employee/{id}',[CaseController::class,'case_details_employee']);
 
 

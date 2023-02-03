@@ -1,0 +1,135 @@
+<style>
+    .validation-message {
+    color: #ffffff;
+    display: none;
+    position: absolute;
+    z-index: 101;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #47A8F5;
+    height: 70px;
+    overflow: hidden;
+  }
+  .validation-message > .message {
+    font-size: 1.3em;
+    text-align: left;
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
+    display: inline-block;
+    padding-left: 20px;
+  }
+  .validation-message.warning {
+    background-color: #FFA92B;
+  }
+  .validation-message.warning .close-message:hover {
+    color: #FFA92B;
+    background-color: #ffffff;
+  }
+  .validation-message.error {
+    background-color: #F56358;
+  }
+  .validation-message.error .close-message:hover {
+    color: #F56358;
+    background-color: #ffffff;
+  }
+  .validation-message.success {
+    background-color: #6ABC6E;
+  }
+  .validation-message.success .close-message:hover {
+    color: #6ABC6E;
+    background-color: #ffffff;
+  }
+  .validation-message .close-message {
+    cursor: pointer;
+    float: right;
+    margin: 5px;
+    font-size: 1.3em;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 3px 7px;
+    border-radius: 5px;
+    -webkit-transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    -moz-transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    -o-transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  }
+  .validation-message .close-message:hover {
+    color: #47A8F5;
+    background-color: #ffffff;
+    -webkit-transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    -moz-transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    -o-transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  }
+  
+</style>
+<button id="success">SUCCESS</button <br />
+  
+    <button id="info">INFO</button <br />
+    
+    <button id="warning">WARNING</button <br />
+    
+    <button id="error">ERROR</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script>
+        
+//close and reset message type
+function resetError() {
+    $('#validation-message').hide();
+    
+    $('#validation-message').removeClass("info success warning error");
+  }
+  
+  //throw our validation messages
+  function validationMessage(type) {
+    //remove any existing errors
+    resetError();
+  
+    //message
+    $('#validation-message > #message').text("MESSAGE TYPE: " + type);
+  
+    //add the correct class
+    $('#validation-message').addClass(type);
+  
+    //show the message
+    $('#validation-message').slideDown("fast");
+  
+    //set a timeout in case they don't x it out themselves
+    setTimeout(function(){ 
+      $('#validation-message.' + type).slideUp("fast");
+    }, 3000);
+  
+    //remove the error class at a later timeout so we don't see a color flash
+    setTimeout(function(){ 
+      $('#validation-message.' + type).removeClass(type);
+    }, 4000);
+  }
+  
+  //listen for close
+  $('#close').click(function() {
+    $('#validation-message').slideUp("fast");
+  });
+  
+  //success message
+  $('#success').click(function() { 
+    validationMessage("success");
+  });
+  
+  //info message
+  $('#info').click(function() { 
+    validationMessage("info");
+  });
+  
+  //warning message
+  $('#warning').click(function() { 
+    validationMessage("warning");
+  });
+  
+  //error message
+  $('#error').click(function() { 
+    validationMessage("error");
+  });
+  
+    </script>

@@ -3,7 +3,7 @@
 @section('content')
     <div class="ms-content-wrapper">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
 
 
                 <div class="ms-panel">
@@ -21,10 +21,10 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Case Title</th>
-                                        <th>Details</th>
-                                        <th>User Name</th>
+                                        <th>Contact</th>
+                                        <th>Email</th>
                                         <th>Assigned To</th>
-                                        <th>Case Created at</th>
+                                      
 
                                         <th>Action</th>
                                     </tr>
@@ -34,10 +34,10 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Case Title</th>
-                                        <th>Details</th>
-                                        <th>User Name</th>
+                                        <th>Contact</th>
+                                        <th>Email</th>
                                         <th>Assigned To</th>
-                                        <th>Case Created at</th>
+                                      
 
                                         <th>Action</th>
                                     </tr>
@@ -48,6 +48,48 @@
                 </div>
 
 
+            </div>
+
+            <div id="details" class="hidden col-xl-4 col-md-12">
+                <div class="ms-panel ms-panel-fh">
+                    <div class="ms-panel-body">
+                        <h2 class="section-title">Case Information</h2>
+                        <table class="table ms-profile-information">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Case ID</th>
+                                    <td id="case_id"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Case Title</th>
+                                    <td id="title"></td>
+                                </tr>
+                                
+                                <tr>
+                                    <th scope="row">Case Details</th>
+                                    <td id="description"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Case Score</th>
+                                    <td id="score"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Name</th>
+                                    <td id="name"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Assigned To</th>
+                                    <td id="Assigned_to"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Created At</th>
+                                    <td id="created_at"></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- cases Modal -->
@@ -139,6 +181,20 @@
 
         function setId(val) {
             document.getElementById('case_id').setAttribute('value', val);
+        }
+
+        async function showDetails(id) {
+        document.getElementById('details').classList.remove('hidden');
+        const response = await axios.get(`/api/case-details-employee/${id}`);
+        document.getElementById('case_id').innerText = id;
+        document.getElementById('title').innerText = response.data[0].case_title;
+        document.getElementById('description').innerText = response.data[0].description;
+        document.getElementById('score').innerText = response.data[0].case_score;
+        document.getElementById('name').innerText = response.data[0].user_first+ ' ' + response.data[0].user_last ;
+      document.getElementById('Assigned_to').innerText = response.data[0].first_name+ ' ' + response.data[0].last_name ;
+        document.getElementById('created_at').innerText = response.data[0].created_at ;
+        
+        
         }
     </script>
 @endsection
