@@ -27,7 +27,10 @@
 
     @yield('content')
 
-    <livewire:scripts />
+
+
+
     @include('sweetalert::alert')
+
     @include('Admin.includes.script')
 </body>

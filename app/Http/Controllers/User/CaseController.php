@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\CaseCreatedEvent;
 use App\Http\Controllers\Controller;
 use App\Jobs\CaseEmailJob;
 use Carbon\Carbon;
@@ -22,15 +23,11 @@ class CaseController extends Controller
         ]);
 
         if ($validator->passes()) {
-            $insert = DB::table('cases')->insert([
-                'case_title' => $request->case_title,
-                'description' => $request->case_description,
-                'user_id' => Auth::user()->id,
-                'created_at' =>Carbon::now()
-            ]);
-            dispatch(new CaseEmailJob());
+
+            event(new CaseCreatedEvent($request->case_title,$request->case_description,Auth::user()->id,Auth::user()->first_name));
             Alert::success('Case Created', 'Case Created successfully');
-            return redirect()->back()->with('File uploaded sucessfully');
+            dispatch(new CaseEmailJob());
+            return redirect()->back();
         }
     }
 
@@ -99,7 +96,7 @@ class CaseController extends Controller
         ];
 
         foreach ($caseFiles as $item) {
-           
+
 
             $uploadedFiles[$item->meta] = "yes";
         }
@@ -185,7 +182,7 @@ class CaseController extends Controller
         $data = DB::select($sql);
 
         $rows = count($data);
-        $sql = "select count(a.id) as total from cases a LEFT join users b on a.user_id = b.id 
+        $sql = "select count(a.id) as total from cases a LEFT join users b on a.user_id = b.id
         LEFT Join users c on a.employee_id = c.id";
         if ($search_value) {
             $sql .= " where a.case_title like '{$search_value}%' or a.id like '{$search_value}%' or b.first_name like '{$search_value}%' or b.email like '{$search_value}%' or b.phone_number like '{$search_value}%' ";
@@ -205,7 +202,7 @@ class CaseController extends Controller
                 $thisData->phone_number,
                 $thisData->email,
                 $employee_name,
-                
+
 
 
                 '<a href="/case-edit/' . $thisData->id . '"  class="fas fa-pen ms-text-primary"></a>
@@ -237,10 +234,10 @@ class CaseController extends Controller
         $timeLine = [
             "Mál stofnað" =>"",
             "Tjónsstilkynning send"=>"",
-           
+
             "Lögregluskýrsla barst" => "",
             "Áverkavottorð sent" => "",
-           
+
         ];
 
         foreach($timeLineData as $item){
@@ -290,7 +287,7 @@ class CaseController extends Controller
                 $created_at[$item->meta] = $item->created_at;
         }
 
-       
+
 
         return view('Admin.Case-management.edit',['case'=>$findCase,'employees'=>$employees,'case_files'=>$uploadedFiles,'approves'=>$approvedBy,'creates'=>$created_at,'timelines'=>$timeLine]);
     }
@@ -303,9 +300,9 @@ class CaseController extends Controller
             'case_score'=>$request->score,
         ]);
 
-      
 
-   
+
+
 
 
         for($i = 0; $i < count($request->title); $i++){
@@ -329,7 +326,7 @@ class CaseController extends Controller
 
               Alert::success('Case Updated', 'Case Updated successfully');
          return redirect()->back();
-     
+
     }
     public function case_delete($id){
         $delete = DB::table('cases')->where('id','=',$id)->delete();
@@ -364,7 +361,7 @@ class CaseController extends Controller
         $count =DB::table('file_uploads')->where('user_id','=',$user_id)->count();
         $user = DB::select('select * from file_uploads where user_id = '.$user_id.'  LIMIT '.$offset.','.$limit.'');
 
-        // 
+        //
         return response()->json(['uploaded_files'=>$user,'total'=>$count]);
     }
 
@@ -385,7 +382,7 @@ class CaseController extends Controller
             "updated_at"=>Carbon::now()
         ]);
 
-        
+
     }
 
     public function case_details_employee($id){

@@ -27,3 +27,4 @@ Route::post('/update-case-details/{id}',[CaseController::class,'update_case_deta
 Route::get('/case-details-employee/{id}',[CaseController::class,'case_details_employee']);
 
 
+
