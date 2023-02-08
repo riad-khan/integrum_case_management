@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 03, 2023 at 03:06 PM
+-- Generation Time: Feb 08, 2023 at 03:53 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -43,8 +43,8 @@ CREATE TABLE `cases` (
 --
 
 INSERT INTO `cases` (`id`, `case_title`, `description`, `case_score`, `user_id`, `employee_id`, `created_at`, `updated_at`) VALUES
-(12, 'Car insurance claim', 'Car insurance claim', '4', 1, 3, '2023-02-03 04:33:31', NULL),
-(13, 'case from employee Section', 'case from employee Section', '3', 3, 3, '2023-02-03 05:18:32', NULL);
+(14, 'chat test case', 'asdasd', '4', 1, 3, NULL, NULL),
+(15, 'chat test case', 'asdasd', '4', 6, 2, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -68,6 +68,53 @@ INSERT INTO `case_files` (`id`, `case_id`, `meta`, `employee_id`, `created_at`) 
 (19, 13, 'Verkbeiðni', 3, '2023-02-03 13:39:32'),
 (20, 12, 'Verkbeiðni', 4, '2023-02-03 13:46:59'),
 (21, 13, 'Tjónstilkynning', 3, '2023-02-03 13:50:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ch_favorites`
+--
+
+CREATE TABLE `ch_favorites` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `favorite_id` bigint(20) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ch_messages`
+--
+
+CREATE TABLE `ch_messages` (
+  `id` bigint(20) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `from_id` bigint(20) NOT NULL,
+  `to_id` bigint(20) NOT NULL,
+  `body` varchar(5000) DEFAULT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
+  `seen` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ch_messages`
+--
+
+INSERT INTO `ch_messages` (`id`, `type`, `from_id`, `to_id`, `body`, `attachment`, `seen`, `created_at`, `updated_at`) VALUES
+(1694951833, 'user', 1, 1, 'hi', NULL, 1, '2023-02-08 05:36:48', '2023-02-08 05:36:48'),
+(1723776146, 'user', 1, 4, 'ki kro', NULL, 1, '2023-02-08 07:51:06', '2023-02-08 08:34:32'),
+(1891044042, 'user', 4, 3, 'jhon listen', NULL, 0, '2023-02-08 08:35:22', '2023-02-08 08:35:22'),
+(1943382528, 'user', 1, 4, 'hi', NULL, 1, '2023-02-08 07:01:42', '2023-02-08 08:34:32'),
+(1974797557, 'user', 4, 1, 'kisu na', NULL, 0, '2023-02-08 08:34:38', '2023-02-08 08:34:38'),
+(2151375630, 'user', 4, 6, 'hi', NULL, 0, '2023-02-08 08:35:31', '2023-02-08 08:35:31'),
+(2208771160, 'user', 1, 3, ':|', NULL, 1, '2023-02-08 07:51:19', '2023-02-08 07:51:22'),
+(2363568035, 'user', 3, 1, 'hi there', NULL, 1, '2023-02-08 06:55:22', '2023-02-08 06:55:22'),
+(2426539510, 'user', 1, 3, 'hi', NULL, 1, '2023-02-08 06:55:08', '2023-02-08 06:55:08');
 
 -- --------------------------------------------------------
 
@@ -166,7 +213,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (25, '2023_01_19_104004_create_roles_table', 1),
 (26, '2023_01_23_085552_create_file_uploads_table', 2),
 (28, '2023_01_23_112509_create_cases_table', 3),
-(29, '2023_02_03_065507_create_jobs_table', 4);
+(29, '2023_02_03_065507_create_jobs_table', 4),
+(30, '2023_02_07_999999_add_active_status_to_users', 5),
+(31, '2023_02_07_999999_add_avatar_to_users', 5),
+(32, '2023_02_07_999999_add_dark_mode_to_users', 5),
+(33, '2023_02_07_999999_add_messenger_color_to_users', 5),
+(34, '2023_02_07_999999_create_favorites_table', 5),
+(35, '2023_02_07_999999_create_messages_table', 5);
 
 -- --------------------------------------------------------
 
@@ -264,7 +317,7 @@ INSERT INTO `timeline` (`id`, `case_id`, `title`, `approve_date`) VALUES
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `first_name` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `date_of_birth` varchar(255) DEFAULT NULL,
   `phone_number` varchar(255) DEFAULT NULL,
@@ -277,18 +330,23 @@ CREATE TABLE `users` (
   `roles` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `active_status` tinyint(1) NOT NULL DEFAULT 0,
+  `avatar` varchar(255) NOT NULL DEFAULT 'avatar.png',
+  `dark_mode` tinyint(1) NOT NULL DEFAULT 0,
+  `messenger_color` varchar(255) NOT NULL DEFAULT '#2180f3',
+  `support_employee` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `date_of_birth`, `phone_number`, `email`, `email_verified_at`, `language`, `website`, `location`, `password`, `roles`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Riad Hossain', 'Khan', '2023-01-18', '01953655424', 'riadkhan2367@gmail.com', NULL, 'asdasd', 'asdasd', 'admin@admin.com', '$2y$10$.HXQ8.fMX0IlpNlNLfmBDuybgzE5nAQe626OFqbMRcYtmohhAPWwK', '1', NULL, '2023-01-19 06:17:48', '2023-01-19 06:17:48'),
-(3, 'Jhon', 'Martin', '2016-02-16', '01953655424', 'employee@employee.com', NULL, NULL, NULL, NULL, '$2y$10$yIou7wEn6De94FCtm5W2Ke30BuzLxi2k3QcL59c4K4SMXj0xtRWfO', '2', NULL, '2023-01-31 02:50:28', '2023-01-31 02:50:28'),
-(4, 'admin', 'admin', '2023-01-19', '01953655424', 'admin@admin.com', NULL, NULL, NULL, 'admin@admin.com', '$2y$10$l60VWGOcHfAkFU/iY6e4L.76KyQK62MGFL5CLI1wmPvq4fpzqGui6', '3', NULL, '2023-01-31 04:52:28', '2023-01-31 04:52:28'),
-(6, 'Masud', 'Rana', '2023-01-18', '01628132705', 'masud@gmail.com', NULL, 'English(US)', 'www.riadhossain.me', NULL, '$2y$10$zcRhdII9ocyFbzPdTUECEOSSrIowr5B7OJfP2OTyAqZ9PU1pYIbSG', '1', NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `name`, `last_name`, `date_of_birth`, `phone_number`, `email`, `email_verified_at`, `language`, `website`, `location`, `password`, `roles`, `remember_token`, `created_at`, `updated_at`, `active_status`, `avatar`, `dark_mode`, `messenger_color`, `support_employee`) VALUES
+(1, 'Riad Hossain', 'Khan', '2023-01-18', '01953655424', 'riadkhan2367@gmail.com', NULL, 'asdasd', 'asdasd', 'admin@admin.com', '$2y$10$.HXQ8.fMX0IlpNlNLfmBDuybgzE5nAQe626OFqbMRcYtmohhAPWwK', '1', NULL, '2023-01-19 06:17:48', '2023-02-08 08:32:40', 1, 'avatar.png', 0, '#3F51B5', 0),
+(3, 'Jhon', 'Martin', '2016-02-16', '01953655424', 'employee@employee.com', NULL, NULL, NULL, NULL, '$2y$10$yIou7wEn6De94FCtm5W2Ke30BuzLxi2k3QcL59c4K4SMXj0xtRWfO', '1,2', NULL, '2023-01-31 02:50:28', '2023-02-08 08:34:23', 0, '1dba1901-3fed-42ab-ae92-c6e4d6693542.jpg', 0, '#00BCD4', 0),
+(4, 'admin', 'admin', '2023-01-19', '01953655424', 'admin@admin.com', NULL, NULL, NULL, 'admin@admin.com', '$2y$10$l60VWGOcHfAkFU/iY6e4L.76KyQK62MGFL5CLI1wmPvq4fpzqGui6', '3', NULL, '2023-01-31 04:52:28', '2023-02-08 08:51:33', 1, 'avatar.png', 0, '#ff2522', 0),
+(6, 'Masud', 'Rana', '2023-01-18', '01628132705', 'masud@gmail.com', NULL, 'English(US)', 'www.riadhossain.me', NULL, '$2y$10$zcRhdII9ocyFbzPdTUECEOSSrIowr5B7OJfP2OTyAqZ9PU1pYIbSG', '1', NULL, NULL, NULL, 0, 'avatar.png', 0, '#2180f3', 0);
 
 --
 -- Indexes for dumped tables
@@ -304,6 +362,18 @@ ALTER TABLE `cases`
 -- Indexes for table `case_files`
 --
 ALTER TABLE `case_files`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ch_favorites`
+--
+ALTER TABLE `ch_favorites`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ch_messages`
+--
+ALTER TABLE `ch_messages`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -373,7 +443,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cases`
 --
 ALTER TABLE `cases`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `case_files`
@@ -403,7 +473,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
