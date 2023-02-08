@@ -111,7 +111,7 @@ class CaseController extends Controller
         $time_line = DB::table('timeline')->where('case_id','=',$id)->get();
 
 
-        return view('Admin.User.dashboard', ['details' => $getCaseDetails, 'case_files' => $uploadedFiles,'time_line'=>$time_line,'id'=>$id]);
+        return view('Admin.User.dashboard', ['details' => $getCaseDetails, 'case_files' => $uploadedFiles,'time_line'=>$time_line,'c_id'=>$id]);
     }
 
     public function assaigned_cases(Request $request)

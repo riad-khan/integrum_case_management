@@ -5,105 +5,17 @@
     <div class="ms-content-wrapper">
         <div class="row">
 
-            @if (!isset($id))
+            @if (!isset($c_id))
                 <livewire:admin.user.components.user-details />
             @endif
 
-            @if (!isset($id))
+            @if (!isset($c_id))
                 <div class="col-xl-6 col-md-12">
-                    <div class="ms-panel ms-panel-fh ms-widget ms-chat-conversations">
-                        <div class="ms-panel-header">
-                            <div class="ms-chat-header justify-content-between">
-                                <div class="ms-chat-user-container media clearfix">
-                                    <div class="ms-chat-status ms-status-online ms-chat-img mr-3 align-self-center">
-                                        <img src="{{ asset('/admin/assets/img/dashboard/rakhan-potik-1.jpg') }}"
-                                            class="ms-img-round" alt="people">
-                                    </div>
-                                    <div class="media-body ms-chat-user-info mt-1">
-                                        <h6>Heather Brown</h6>
-                                        <span class="text-disabled fs-12">
-                                            Active Now
-                                        </span>
-                                    </div>
-                                </div>
-                                <ul class="ms-list ms-list-flex ms-chat-controls">
-                                    <li data-toggle="tooltip" data-placement="top" title="Call"> <i
-                                            class="material-icons">local_phone</i> </li>
-                                    <li data-toggle="tooltip" data-placement="top" title="Video Call"> <i
-                                            class="material-icons">videocam</i> </li>
-                                    <li data-toggle="tooltip" data-placement="top" title="Add to Chat"> <i
-                                            class="material-icons">person_add</i> </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="ms-panel-body ms-scrollable ps">
-                            <div class="ms-chat-bubble ms-chat-message ms-chat-outgoing media clearfix">
-                                <div class="ms-chat-status ms-status-online ms-chat-img">
-                                    <img src="{{ asset('/admin/assets/img/dashboard/rakhan-potik-1.jpg') }}"
-                                        class="ms-img-round" alt="people">
-                                </div>
-                                <div class="media-body">
-                                    <div class="ms-chat-text">
-                                        <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    </div>
-                                    <p class="ms-chat-time">10:33 pm</p>
-                                </div>
-                            </div>
-                            <div class="ms-chat-bubble ms-chat-message ms-chat-incoming media clearfix">
-                                <div class="ms-chat-status ms-status-online ms-chat-img">
-                                    <img src="{{ asset('/admin/assets/img/dashboard/rakhan-potik-2.jpg') }}"
-                                        class="ms-img-round" alt="people">
-                                </div>
-                                <div class="media-body">
-                                    <div class="ms-chat-text">
-                                        <p> I'm doing great, thanks for asking </p>
-                                        <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                            Ipsum has been the industry's standard </p>
-                                    </div>
-                                    <p class="ms-chat-time">11:01 pm</p>
-                                </div>
-                            </div>
-                            <div class="ms-chat-bubble ms-chat-message ms-chat-outgoing media clearfix">
-                                <div class="ms-chat-status ms-status-online ms-chat-img">
-                                    <img src="{{ asset('/admin/assets/img/dashboard/rakhan-potik-1.jpg') }}"
-                                        class="ms-img-round" alt="people">
-                                </div>
-                                <div class="media-body">
-                                    <div class="ms-chat-text">
-                                        <p> It is a long established fact that a reader will be distracted by the readable
-                                            content of a page </p>
-                                        <p> There are many variations of passages of Lorem Ipsum available </p>
-                                    </div>
-                                    <p class="ms-chat-time">11:03 pm</p>
-                                </div>
-                            </div>
-                            <div class="ms-panel-footer">
-                                <div class="ms-chat-textbox">
-                                    <ul class="ms-list-flex mb-0">
-                                        <li class="ms-chat-vn"><i class="material-icons">mic</i> </li>
-                                        <li class="ms-chat-input">
-                                            <input type="text" name="msg" placeholder="Enter Message" value="">
-                                        </li>
-                                        <li class="ms-chat-text-controls ms-list-flex">
-                                            <span> <i class="material-icons">tag_faces</i> </span>
-                                            <span> <i class="material-icons">attach_file</i> </span>
-                                            <span> <i class="material-icons">camera_alt</i> </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                            </div>
-                            <div class="ps__rail-y" style="top: 0px; right: 0px;">
-                                <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('chat.chat')
                 </div>
             @endif
 
-            @if (isset($id))
+            @if (isset($c_id))
                 @include('Admin.User.Dashboard-sections.case-section')
             @endif
 
@@ -200,7 +112,7 @@
                 </div>
             </div>
 
-            @if (!isset($id))
+            @if (!isset($c_id))
                 @include('Admin.User.Dashboard-sections.case-section')
             @endif
 

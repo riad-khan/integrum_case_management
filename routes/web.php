@@ -9,7 +9,9 @@ use App\Http\Controllers\User\CaseController;
 use App\Http\Controllers\User\FileUploadController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +40,20 @@ require __DIR__.'/auth.php';
 
 
 Route::middleware('user')->group(function () {
-    Route::get('/', function () {
-        return view('Admin.User.dashboard');
+    Route::get('/', function ($id = null) {
+
+        $routeName= FacadesRequest::route()->getName();
+        $type = in_array($routeName, ['user','group'])
+            ? $routeName
+            : 'user';
+
+        return view('Admin.User.dashboard', [
+            'id' => $id ?? 0,
+            'type' => $type ?? 'user',
+            'messengerColor' => Auth::user()->messenger_color ?? $this->messengerFallbackColor,
+            'dark_mode' => Auth::user()->dark_mode < 1 ? 'light' : 'dark',
+        ]);
+      //  return view('Admin.User.dashboard');
     });
 
     Route::get('/user-profile',[UserProfileController::class,'index']);
